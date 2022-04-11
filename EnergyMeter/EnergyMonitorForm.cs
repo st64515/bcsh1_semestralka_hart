@@ -5,20 +5,31 @@ namespace EnergyMonitor
     public partial class EnergyMonitorForm : Form
     {
 
-        private Meter? meter;
-        private BindingSource bs = new();
+        private Meter meter = new();
+        private BindingSource bsReadings = new();
+        private BindingSource bsPrices = new();
+        private BindingSource bsTaxes = new();
 
         public EnergyMonitorForm()
         {
             InitializeComponent();
 
-            meter = new(new Reading(new DateTime(2022, 04, 01), 10000));
-            meter.AddElectricityPrice(new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 2);
-            meter.AddElectricityPrice(new DateTime(2024, 01, 01), new DateTime(2026, 12, 31), 10);
+            meter.AddReading(new Reading(new DateTime(2022, 04, 01), 10000));
+            meter.AddPrice(new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 2);
+            meter.AddPrice(new DateTime(2024, 01, 01), new DateTime(2026, 12, 31), 10);
             meter.AddReading(new Reading(new DateTime(2022, 04, 10), 11000));
+            meter.AddTax("Poplatek", new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 1000, Intervals.PerMonth);
+            
+            bsReadings.DataSource = meter.Readings;
+            listBoxReadings.DataSource = bsReadings;
 
-            bs.DataSource = meter.Readings;
-            listBoxReadings.DataSource = bs;
+            bsPrices.DataSource = meter.Prices;
+            listBoxPrices.DataSource = bsPrices;
+
+            bsTaxes.DataSource = meter.Taxes;
+            listBoxTaxes.DataSource = bsTaxes;
+
+
         }
 
         private void ButtonAddReading_Click(object sender, EventArgs e)
@@ -27,29 +38,23 @@ namespace EnergyMonitor
             if (f.ShowDialog() == DialogResult.OK)
             {
                 Reading newReading = new(f.Date, f.StateOfGauge);
-                if (meter == null)
+
+                try
                 {
-                    meter = new(newReading);
+                    meter.AddReading(newReading);
                 }
-                else
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        meter.AddReading(newReading);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    MessageBox.Show(ex.Message);
                 }
 
                 //obnov DataSource v ListBoxu
-                bs.DataSource = null;
-                bs.DataSource = meter.Readings;
+                bsReadings.DataSource = null;
+                bsReadings.DataSource = meter.Readings;
             }
         }
 
-        private void buttonEditReading_Click(object sender, EventArgs e)
+        private void ButtonEditReading_Click(object sender, EventArgs e)
         {
             if (listBoxReadings.SelectedItem is Reading actualReading)
             {
@@ -69,23 +74,66 @@ namespace EnergyMonitor
                         }
 
                         //obnov DataSource v ListBoxu
-                        bs.DataSource = null;
-                        bs.DataSource = meter.Readings;
+                        bsReadings.DataSource = null;
+                        bsReadings.DataSource = meter.Readings;
                     }
                 }
             }
         }
 
-        private void buttonRemoveReading_Click(object sender, EventArgs e)
+        private void ButtonRemoveReading_Click(object sender, EventArgs e)
         {
             if (meter is not null)
             {
                 meter.RemoveReading(listBoxReadings.SelectedIndex);
 
                 //obnov DataSource v ListBoxu
-                bs.DataSource = null;
-                bs.DataSource = meter.Readings;
+                bsReadings.DataSource = null;
+                bsReadings.DataSource = meter.Readings;
             }
+        }
+
+        private void ButtonNewPrice_Click(object sender, EventArgs e)
+        {
+            using AddEditPriceForm f = new();
+            if (f.ShowDialog() == DialogResult.OK)
+            {
+                Price newPrice = new(f.StartDate, f.EndDate, f.Cost);
+
+                try
+                {
+                    meter.AddPrice(newPrice);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                //obnov DataSource v ListBoxu
+                bsReadings.DataSource = null;
+                bsReadings.DataSource = meter.Readings;
+            }
+        }
+
+        private void ButtonEditPrice_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ButtonRemovePrice_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void ButtonSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ButtonLoad_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

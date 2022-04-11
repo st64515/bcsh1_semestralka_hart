@@ -1,5 +1,4 @@
 ﻿namespace EnergyMonitorLibrary;
-
 using System.Collections;
 
 /// <summary>
@@ -13,30 +12,33 @@ public class DatabaseOfPrices : IEnumerable
     public int Count => Data.Count;
 
 
-    //private EMValidator validator = new();
+    /// <summary>
+    /// Metoda sloužící k zadání nové ceny do databáze cen.
+    /// </summary>
+    /// <param name="dateStart">Počáteční datum cenovky.</param>
+    /// <param name="dateEnd">Expirační datum cenovky.</param>
+    /// <param name="price">Cena za kWh.</param>
+    public void Add(Price p)
+    {
+        if (p.StartDate> p.EndDate)
+        {
+            throw new ArgumentException("Start date must be before date of end.");
+        }
+        if (EMValidator.Overlaps(Data, p.StartDate, p.EndDate))
+        {
+            throw new InvalidOperationException("Inserted period must not overlap existing ones.");
+        }
+        Data.Add(new Price(p.StartDate, p.EndDate, p.Cost));
 
+        Data.Sort(new Price.PriceTagIntervalComparer());
+    }
+
+    public IEnumerator GetEnumerator() => Data.GetEnumerator();
 
     public Price this[int index]
     {
         get => Data[index];
     }
 
-    public void Add(DateTime dateStart, DateTime dateEnd, double price)
-    {
-        if (dateStart > dateEnd)
-        {
-            throw new ArgumentException("Start date must be before date of end.");
-        }
-        if (EMValidator.Overlaps(Data, dateStart, dateEnd))
-        {
-            throw new InvalidOperationException("Inserted period must not overlap existing ones.");
-        }
-        Data.Add(new Price(dateStart, dateEnd, price));
-        Data.Sort(new Price.PriceTagIntervalComparer());
-    }
-
-    public IEnumerator GetEnumerator() => Data.GetEnumerator();
-
-    
 
 }

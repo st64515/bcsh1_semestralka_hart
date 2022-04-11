@@ -43,6 +43,8 @@
             this.buttonNewTax = new System.Windows.Forms.Button();
             this.listBoxTaxes = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonLoad = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxReadings
@@ -82,7 +84,7 @@
             this.buttonEditReading.TabIndex = 3;
             this.buttonEditReading.Text = "Upravit odečet";
             this.buttonEditReading.UseVisualStyleBackColor = true;
-            this.buttonEditReading.Click += new System.EventHandler(this.buttonEditReading_Click);
+            this.buttonEditReading.Click += new System.EventHandler(this.ButtonEditReading_Click);
             // 
             // label1
             // 
@@ -113,7 +115,7 @@
             this.buttonRemoveReading.TabIndex = 8;
             this.buttonRemoveReading.Text = "Odebrat odečet";
             this.buttonRemoveReading.UseVisualStyleBackColor = true;
-            this.buttonRemoveReading.Click += new System.EventHandler(this.buttonRemoveReading_Click);
+            this.buttonRemoveReading.Click += new System.EventHandler(this.ButtonRemoveReading_Click);
             // 
             // buttonRemovePrice
             // 
@@ -124,6 +126,7 @@
             this.buttonRemovePrice.TabIndex = 11;
             this.buttonRemovePrice.Text = "Odebrat cenu";
             this.buttonRemovePrice.UseVisualStyleBackColor = true;
+            this.buttonRemovePrice.Click += new System.EventHandler(this.ButtonRemovePrice_Click);
             // 
             // buttonEditPrice
             // 
@@ -134,6 +137,7 @@
             this.buttonEditPrice.TabIndex = 10;
             this.buttonEditPrice.Text = "Upravit cenu";
             this.buttonEditPrice.UseVisualStyleBackColor = true;
+            this.buttonEditPrice.Click += new System.EventHandler(this.ButtonEditPrice_Click);
             // 
             // buttonNewPrice
             // 
@@ -143,6 +147,7 @@
             this.buttonNewPrice.TabIndex = 9;
             this.buttonNewPrice.Text = "Nová cena";
             this.buttonNewPrice.UseVisualStyleBackColor = true;
+            this.buttonNewPrice.Click += new System.EventHandler(this.ButtonNewPrice_Click);
             // 
             // buttonRemoveTax
             // 
@@ -166,7 +171,7 @@
             // 
             // buttonNewTax
             // 
-            this.buttonNewTax.Location = new System.Drawing.Point(714, 242);
+            this.buttonNewTax.Location = new System.Drawing.Point(814, 242);
             this.buttonNewTax.Name = "buttonNewTax";
             this.buttonNewTax.Size = new System.Drawing.Size(114, 43);
             this.buttonNewTax.TabIndex = 12;
@@ -179,7 +184,7 @@
             this.listBoxTaxes.ItemHeight = 15;
             this.listBoxTaxes.Location = new System.Drawing.Point(560, 37);
             this.listBoxTaxes.Name = "listBoxTaxes";
-            this.listBoxTaxes.Size = new System.Drawing.Size(268, 199);
+            this.listBoxTaxes.Size = new System.Drawing.Size(368, 199);
             this.listBoxTaxes.TabIndex = 15;
             // 
             // label3
@@ -187,16 +192,38 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label3.Location = new System.Drawing.Point(560, 9);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(268, 23);
+            this.label3.Size = new System.Drawing.Size(368, 23);
             this.label3.TabIndex = 16;
             this.label3.Text = "POPLATKY";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(814, 638);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(114, 28);
+            this.buttonSave.TabIndex = 17;
+            this.buttonSave.Text = "Uložit";
+            this.buttonSave.UseVisualStyleBackColor = false;
+            this.buttonSave.Click += new System.EventHandler(this.ButtonSave_Click);
+            // 
+            // buttonLoad
+            // 
+            this.buttonLoad.Location = new System.Drawing.Point(694, 638);
+            this.buttonLoad.Name = "buttonLoad";
+            this.buttonLoad.Size = new System.Drawing.Size(114, 28);
+            this.buttonLoad.TabIndex = 18;
+            this.buttonLoad.Text = "Načíst";
+            this.buttonLoad.UseVisualStyleBackColor = true;
+            this.buttonLoad.Click += new System.EventHandler(this.ButtonLoad_Click);
             // 
             // EnergyMonitorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(841, 678);
+            this.ClientSize = new System.Drawing.Size(940, 678);
+            this.Controls.Add(this.buttonLoad);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listBoxTaxes);
             this.Controls.Add(this.buttonRemoveTax);
@@ -214,7 +241,7 @@
             this.Controls.Add(this.listBoxReadings);
             this.MaximizeBox = false;
             this.Name = "EnergyMonitorForm";
-            this.Text = "Form1";
+            this.Text = "Energy Monitor";
             this.ResumeLayout(false);
 
         }
@@ -236,5 +263,7 @@
         private Button buttonNewTax;
         private ListBox listBoxTaxes;
         private Label label3;
+        private Button buttonSave;
+        private Button buttonLoad;
     }
 }

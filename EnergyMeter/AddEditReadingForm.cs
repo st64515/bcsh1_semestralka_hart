@@ -21,10 +21,18 @@
             dateTimePickerReadingDate.Value = date;
         }
 
-
         private void ButtonOk_Click(object sender, EventArgs e)
         {
-
+            if (int.TryParse(textBoxGaugeState.Text, out int gaugeStateParsed))
+            {
+                StateOfGauge = gaugeStateParsed;
+                Date = dateTimePickerReadingDate.Value.Date;
+            }
+            else
+            {
+                MessageBox.Show("Neplatný stav měřiče. Změny nebyly provedeny.");
+                DialogResult = DialogResult.Cancel;
+            }
         }
     }
 }

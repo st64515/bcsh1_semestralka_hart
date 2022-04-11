@@ -1,4 +1,5 @@
 ﻿namespace EnergyMonitorLibrary;
+
 /// <summary>
 /// Třída reprezentuje odečet z měřiče.
 /// </summary>

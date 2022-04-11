@@ -6,7 +6,7 @@ public class Meter
     public List<Price> Prices => prices.Data;
     public List<Tax> Taxes => taxes.Data;
 
-    private readonly DatabaseOfReadings readings;
+    private readonly ReadingsDatabase readings;
     private readonly DatabaseOfPrices prices;
     private readonly DatabaseOfTaxes taxes;
 
@@ -15,7 +15,13 @@ public class Meter
     //int StateOfGauge => readings.StateOfGauge;
     //DateTime LastReading => readings.LastReading;
 
-
+    public Meter() {
+        readings = new();
+        prices = new();
+        taxes = new();
+    }
+        
+    
     public Meter(Reading firstReading)
     {
         readings = new(firstReading);
@@ -25,29 +31,16 @@ public class Meter
 
 
 
-    /// <summary>
-    /// Metoda sloužící k přidání nového odečtu na elektroměru.
-    /// </summary>
-    /// <param name="dateOfReading">Datum odečtu.</param>
-    /// <param name="actualStateOfGauge">Stav hodin při odečtu.</param>
-    /// <exception cref="ArgumentException">Vyvolá výjimku, pokud zadané parametry nejsou validní nebo není pro zadané období nastavena cena.</exception>
     public void AddReading(Reading r)
     {
         readings.Add(r);
     }
-    /// <summary>
-    /// Metoda sloužící k editaci existujícího odečtu.
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="editedReading"></param>
+  
     public void EditReading(int index, Reading editedReading)
     {
         readings.Edit(index, editedReading);
     }
-    /// <summary>
-    /// Metoda sloužící k odebrání odečtu z určitého indexu.
-    /// </summary>
-    /// <param name="i"></param>
+    
     public void RemoveReading(int i)
     {
         readings.Remove(i);
@@ -56,15 +49,10 @@ public class Meter
 
 
 
-    /// <summary>
-    /// Metoda sloužící k zadání nové ceny do databáze cen.
-    /// </summary>
-    /// <param name="dateStart">Počáteční datum cenovky.</param>
-    /// <param name="dateEnd">Expirační datum cenovky.</param>
-    /// <param name="price">Cena za kWh.</param>
-    public void AddElectricityPrice(DateTime dateStart, DateTime dateEnd, int price)
+    
+    public void AddPrice(Price p)
     {
-        prices.Add(dateStart, dateEnd, price);
+        prices.Add(p);
     }
 
     internal string PrintPrices()
