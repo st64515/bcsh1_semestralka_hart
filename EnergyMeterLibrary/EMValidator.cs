@@ -43,30 +43,19 @@
         /// Metoda zjistí, zda v listu cen, není již uložená nějaká cena,
         /// která by se překrývala s tou, jež chce uživatel přidat.
         /// </summary>
-        /// <param name="pricesList"></param>
-        /// <param name="newDateStart"></param>
-        /// <param name="newDateEnd"></param>
-        /// <returns></returns>
-        public static bool Overlaps(List<Price> pricesList, DateTime newDateStart, DateTime newDateEnd)
+        /// <param name="tmpPricesList">List cen, musí být seřazený</param>
+        /// <returns>True, pokud se některé ceny překrývají. Jinak false.</returns>
+        public static bool ContainsOverlapingPrices(List<Price> tmpPricesList)
         {
-            bool overlaps = false;
-
-            List<Price> copiedPrices_list = new(pricesList);
-
-            copiedPrices_list.Add(new(newDateStart, newDateEnd, 0));
-            copiedPrices_list.Sort(new Price.PriceTagIntervalComparer());
-
-            for (int i = 0; i < (pricesList.Count - 1); i++)
+            for (int i = 0; i < (tmpPricesList.Count - 1); i++)
             {
-                if (pricesList[i].EndDate >= pricesList[i + 1].StartDate)
+                if (tmpPricesList[i].EndDate >= tmpPricesList[i + 1].StartDate)
                 {
-                    overlaps = true;
-                    break;
+                    return true;
                 }
             }
 
-            return overlaps;
-
+            return false;
         }
     }
 }

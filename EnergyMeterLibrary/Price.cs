@@ -13,7 +13,7 @@ public class Price : IComparable<Price>
     }
     public int CompareTo(Price? other) => StartDate.CompareTo(other?.StartDate);
 
-    public class PriceTagIntervalComparer : IComparer<Price>
+    public class Comparer : IComparer<Price>
     {
         public int Compare(Price? x, Price? y)
         {

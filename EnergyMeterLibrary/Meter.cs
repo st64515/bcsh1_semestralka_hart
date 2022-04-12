@@ -30,7 +30,7 @@ public class Meter
     }
 
 
-
+    //READINGS
     public void AddReading(Reading r)
     {
         readings.Add(r);
@@ -41,19 +41,28 @@ public class Meter
         readings.Edit(index, editedReading);
     }
     
-    public void RemoveReading(int i)
+    public void RemoveReading(int index)
     {
-        readings.Remove(i);
+        readings.Remove(index);
     }
 
-
-
-
-    
+    //PRICES
     public void AddPrice(Price p)
     {
         prices.Add(p);
     }
+
+    public void EditPrice(int index, Price editedPrice)
+    {
+        prices.Edit(index, editedPrice);
+    }
+
+    public void RemovePrice(int index)
+    {
+        prices.Remove(index);
+    }
+
+
 
     internal string PrintPrices()
     {
@@ -65,6 +74,8 @@ public class Meter
         }
         return sb.ToString();
     }
+
+    //TAXES
 
     /// <summary>
     /// Metoda sloužící k zadání nového poplatku do databáze poplatků.
@@ -152,6 +163,8 @@ public class Meter
 
     }
 
+    
+
     private double GetCostBetween(DateTime lastDateOfReading, DateTime date, double AVGConsumption)
     {
         //TODO dodelat vypocet na zaklade funkce prices.GetPriceFromDate(aktualni den v danem intervalu)
@@ -162,6 +175,7 @@ public class Meter
     {
         return (date - lastDateOfReading).Days;
     }
+
 
     private static int ConsumptionBetween(int stateOfGauge, int lastGaugeState)
     {

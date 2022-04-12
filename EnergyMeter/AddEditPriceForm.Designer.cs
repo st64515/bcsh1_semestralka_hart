@@ -78,7 +78,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(21, 151);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 34);
-            this.buttonCancel.TabIndex = 5;
+            this.buttonCancel.TabIndex = 3;
             this.buttonCancel.Text = "Storno";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
@@ -88,7 +88,7 @@
             this.buttonOk.Location = new System.Drawing.Point(291, 151);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 34);
-            this.buttonOk.TabIndex = 7;
+            this.buttonOk.TabIndex = 4;
             this.buttonOk.Text = "OK";
             this.buttonOk.UseVisualStyleBackColor = true;
             this.buttonOk.Click += new System.EventHandler(this.ButtonOk_Click);
@@ -98,7 +98,7 @@
             this.dateTimePickerEndDate.Location = new System.Drawing.Point(113, 94);
             this.dateTimePickerEndDate.Name = "dateTimePickerEndDate";
             this.dateTimePickerEndDate.Size = new System.Drawing.Size(253, 23);
-            this.dateTimePickerEndDate.TabIndex = 8;
+            this.dateTimePickerEndDate.TabIndex = 2;
             // 
             // label3
             // 
