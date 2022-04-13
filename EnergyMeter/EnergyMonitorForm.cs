@@ -18,7 +18,7 @@ namespace EnergyMonitor
             meter.AddPrice(new Price(new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 2));
             meter.AddPrice(new Price(new DateTime(2024, 01, 01), new DateTime(2026, 12, 31), 10));
             meter.AddReading(new Reading(new DateTime(2022, 04, 10), 11000));
-            meter.AddTax("Poplatek", new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 1000, Intervals.PerMonth);
+            meter.AddTax(new Tax("Poplatek", new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 1000, Intervals.PerMonth));
 
             bsReadings.DataSource = meter.Readings;
             listBoxReadings.DataSource = bsReadings;
@@ -141,6 +141,61 @@ namespace EnergyMonitor
             bsPrices.DataSource = meter.Prices;
         }
 
+
+        private void ButtonNewTax_Click(object sender, EventArgs e)
+        {
+            using AddEditTaxForm f = new();
+            if (f.ShowDialog() == DialogResult.OK)
+            {
+                Tax newTax = new(f.Description, f.StartDate, f.EndDate, f.Cost, f.Interval);
+
+                try
+                {
+                    meter.AddTax(newTax);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                //obnov DataSource v ListBoxu
+                bsTaxes.DataSource = null;
+                bsTaxes.DataSource = meter.Taxes;
+            }
+        }
+
+        private void ButtonEditTax_Click(object sender, EventArgs e)
+        {
+            if (listBoxTaxes.SelectedItem is Tax actualTax)
+            {
+                using AddEditTaxForm f = new(actualTax.Description, actualTax.StartDate, actualTax.EndDate, actualTax.Cost, actualTax.Interval);
+                if (f.ShowDialog() == DialogResult.OK)
+                {
+                    Tax editedTax = new(f.Description, f.StartDate, f.EndDate, f.Cost, f.Interval);
+                    try
+                    {
+                        meter.EditTax(listBoxTaxes.SelectedIndex, editedTax);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
+                    //obnov DataSource v ListBoxu
+                    bsTaxes.DataSource = null;
+                    bsTaxes.DataSource = meter.Taxes;
+                }
+            }
+        }
+
+        private void ButtonRemoveTax_Click(object sender, EventArgs e)
+        {
+            meter.RemoveTax(listBoxTaxes.SelectedIndex);
+
+            //obnov DataSource v ListBoxu
+            bsTaxes.DataSource = null;
+            bsTaxes.DataSource = meter.Taxes;
+        }
 
         private void ButtonSave_Click(object sender, EventArgs e)
         {

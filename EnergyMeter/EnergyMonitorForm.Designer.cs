@@ -158,6 +158,7 @@
             this.buttonRemoveTax.TabIndex = 14;
             this.buttonRemoveTax.Text = "Odebrat poplatek";
             this.buttonRemoveTax.UseVisualStyleBackColor = true;
+            this.buttonRemoveTax.Click += new System.EventHandler(this.ButtonRemoveTax_Click);
             // 
             // buttonEditTax
             // 
@@ -168,6 +169,7 @@
             this.buttonEditTax.TabIndex = 13;
             this.buttonEditTax.Text = "Upravit poplatek";
             this.buttonEditTax.UseVisualStyleBackColor = true;
+            this.buttonEditTax.Click += new System.EventHandler(this.ButtonEditTax_Click);
             // 
             // buttonNewTax
             // 
@@ -177,6 +179,7 @@
             this.buttonNewTax.TabIndex = 12;
             this.buttonNewTax.Text = "Nový poplatek";
             this.buttonNewTax.UseVisualStyleBackColor = true;
+            this.buttonNewTax.Click += new System.EventHandler(this.ButtonNewTax_Click);
             // 
             // listBoxTaxes
             // 

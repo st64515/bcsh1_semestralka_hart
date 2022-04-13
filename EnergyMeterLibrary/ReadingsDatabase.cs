@@ -12,11 +12,13 @@ public class ReadingsDatabase : IEnumerable
     public int Count => Data.Count;
     public int LastStateOfGauge => Data[^1].StateOfGauge;
     public DateTime LastReading => Data[^1].Date;
-
+    
+    /*
     public ReadingsDatabase(Reading firstReading)
     {
         this.Add(firstReading);
     }
+    */
 
     public ReadingsDatabase()
     {
@@ -29,20 +31,20 @@ public class ReadingsDatabase : IEnumerable
     /// </summary>
     /// <param name="dateOfReading">Datum odečtu.</param>
     /// <param name="actualStateOfGauge">Stav hodin při odečtu</param>
-    internal void Add(Reading r)
+    public void Add(Reading newReading)
     {
-        if(r.StateOfGauge < 0)
+        if(newReading.StateOfGauge < 0)
         {
             throw new ArgumentException("Odečet nesmí být záporná hodnota.");
         }
 
         List<Reading> tmpData = new(Data);
-        tmpData.Add(r);
+        tmpData.Add(newReading);
         tmpData.Sort(new Reading.Comparer());
 
-        if (CheckReadingsAsc(tmpData))
+        if (ReadingsAreAscending(tmpData))
         {
-            Data.Add(r);
+            Data.Add(newReading);
             Data.Sort(new Reading.Comparer());
         }
         else
@@ -57,22 +59,22 @@ public class ReadingsDatabase : IEnumerable
     /// </summary>
     /// <param name="index"></param>
     /// <param name="editedReading"></param>
-    public void Edit(int index, Reading r)
+    public void Edit(int index, Reading editedReading)
     {
         List<Reading> tmpData = new(Data);
         tmpData.RemoveAt(index);
-        tmpData.Add(r);
+        tmpData.Add(editedReading);
         tmpData.Sort(new Reading.Comparer());
 
-        if (CheckReadingsAsc(tmpData))
+        if (ReadingsAreAscending(tmpData))
         {
             Data.RemoveAt(index);
-            Data.Add(r);
+            Data.Add(editedReading);
             Data.Sort(new Reading.Comparer());
         }
         else
         {
-            throw new ArgumentException("Zadaná hodnota narušuje stoupající posloupnost stavu měřiče vzhledem k datumu." +
+            throw new ArgumentException("Zadaná hodnota narušuje stoupající posloupnost stavu měřiče vzhledem k datumu. " +
                 "Odečet nemůže být nižší než jeho následovník.");
         }
     }
@@ -80,10 +82,14 @@ public class ReadingsDatabase : IEnumerable
     /// <summary>
     /// Metoda sloužící k odebrání odečtu z určitého indexu.
     /// </summary>
-    /// <param name="i"></param>
-    public void Remove(int i)
+    /// <param name="index"></param>
+    public void Remove(int index)
     {
-        Data.RemoveAt(i);
+        if (index < 0 || index >= Data.Count)
+        {
+            return;
+        }
+        Data.RemoveAt(index);
     }
 
     /// <summary>
@@ -100,7 +106,7 @@ public class ReadingsDatabase : IEnumerable
         get => Data[index];
     }
     
-    private static bool CheckReadingsAsc(List<Reading> tmpData)
+    private static bool ReadingsAreAscending(List<Reading> tmpData)
     {
         if (tmpData.Count == 0)
         {

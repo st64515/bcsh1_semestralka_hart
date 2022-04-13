@@ -7,8 +7,8 @@ public class Meter
     public List<Tax> Taxes => taxes.Data;
 
     private readonly ReadingsDatabase readings;
-    private readonly DatabaseOfPrices prices;
-    private readonly DatabaseOfTaxes taxes;
+    private readonly PricesDatabase prices;
+    private readonly TaxesDatabase taxes;
 
     //private readonly EMValidator validator = new();
 
@@ -21,19 +21,19 @@ public class Meter
         taxes = new();
     }
         
-    
+    /*
     public Meter(Reading firstReading)
     {
         readings = new(firstReading);
         prices = new();
         taxes = new();
-    }
+    }*/
 
 
     //READINGS
-    public void AddReading(Reading r)
+    public void AddReading(Reading newReading)
     {
-        readings.Add(r);
+        readings.Add(newReading);
     }
   
     public void EditReading(int index, Reading editedReading)
@@ -47,9 +47,9 @@ public class Meter
     }
 
     //PRICES
-    public void AddPrice(Price p)
+    public void AddPrice(Price newPrice)
     {
-        prices.Add(p);
+        prices.Add(newPrice);
     }
 
     public void EditPrice(int index, Price editedPrice)
@@ -60,6 +60,22 @@ public class Meter
     public void RemovePrice(int index)
     {
         prices.Remove(index);
+    }
+
+    //TAXES
+    public void AddTax(Tax newTax)
+    {
+        taxes.Add(newTax);
+    }
+
+    public void EditTax(int index, Tax editedTax)
+    {
+        taxes.Edit(index, editedTax);
+    }
+
+    public void RemoveTax(int index)
+    {
+        taxes.Remove(index);
     }
 
 
@@ -75,22 +91,6 @@ public class Meter
         return sb.ToString();
     }
 
-    //TAXES
-
-    /// <summary>
-    /// Metoda sloužící k zadání nového poplatku do databáze poplatků.
-    /// </summary>
-    /// <param name="name">Název poplatku.</param>
-    /// <param name="dateStart">Počáteční datum účinnosti poplatku.</param>
-    /// <param name="dateEnd">Expirační datum účinnosti poplatku.</param>
-    /// <param name="price">Cena za jednotku.</param>
-    /// <param name="interval">Interval účtování poplatku.</param>
-    /// <exception cref="NotImplementedException"></exception>
-    public void AddTax(string name, DateTime dateStart, DateTime dateEnd, int price, Intervals interval)
-    {
-
-        taxes.Add(name, dateStart, dateEnd, price, interval);
-    }
 
     /// <summary>
     /// Metoda sloužící k výpisu posledních n záznamů odečtů.

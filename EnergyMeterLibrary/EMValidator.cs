@@ -12,7 +12,7 @@
         /// <param name="intervalBegin">Počátek intervalu</param>
         /// <param name="intervalEnd">Konec intervalu</param>
         /// <returns>True, pokud pro všechny dny v intervalu existuje cena. Jinak false.</returns>
-        public static bool ExistsPriceBetween(DatabaseOfPrices prices, DateTime intervalBegin, DateTime intervalEnd)
+        public static bool ExistsPriceBetween(PricesDatabase prices, DateTime intervalBegin, DateTime intervalEnd)
         {
             Message = string.Empty;
             DateTime iteration = intervalBegin;
