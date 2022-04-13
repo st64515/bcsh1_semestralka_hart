@@ -10,37 +10,24 @@ public class Meter
     private readonly PricesDatabase prices;
     private readonly TaxesDatabase taxes;
 
-    //private readonly EMValidator validator = new();
-
-    //int StateOfGauge => readings.StateOfGauge;
-    //DateTime LastReading => readings.LastReading;
-
-    public Meter() {
+    public Meter()
+    {
         readings = new();
         prices = new();
         taxes = new();
     }
-        
-    /*
-    public Meter(Reading firstReading)
-    {
-        readings = new(firstReading);
-        prices = new();
-        taxes = new();
-    }*/
-
 
     //READINGS
     public void AddReading(Reading newReading)
     {
         readings.Add(newReading);
     }
-  
+
     public void EditReading(int index, Reading editedReading)
     {
         readings.Edit(index, editedReading);
     }
-    
+
     public void RemoveReading(int index)
     {
         readings.Remove(index);
@@ -80,6 +67,7 @@ public class Meter
 
 
 
+
     internal string PrintPrices()
     {
         StringBuilder sb = new();
@@ -116,7 +104,7 @@ public class Meter
         }
         return sb.ToString();
     }
-    
+
     /// <summary>
     /// Metoda sloužící k výpisu všech poplatků.
     /// </summary>
@@ -163,7 +151,7 @@ public class Meter
 
     }
 
-    
+
 
     private double GetCostBetween(DateTime lastDateOfReading, DateTime date, double AVGConsumption)
     {
@@ -185,5 +173,39 @@ public class Meter
     private static double AVGConsumptionBetween(int stateOfGauge, int lastGaugeState, DateTime date, DateTime lastDateOfReading)
     {
         return ConsumptionBetween(stateOfGauge, lastGaugeState) / (DaysBetween(date, lastDateOfReading));
+    }
+
+
+    public void Save(string fileName)
+    {
+        {
+            ReadingsFileSerializerDeserializer saver = new(readings, fileName);
+            saver.Save();
+        }
+        {
+            PricesFileSerializerDeserializer saver = new(prices, fileName);
+            saver.Save();
+        }
+        {
+            TaxesFileSerializerDeserializer saver = new(taxes, fileName);
+            saver.Save();
+        }
+    }
+
+    public void Load(string fileName)
+    {
+        {
+            ReadingsFileSerializerDeserializer loader = new(readings, fileName);
+            loader.Load();
+        }
+        {
+            PricesFileSerializerDeserializer loader = new(prices, fileName);
+            loader.Load();
+        }
+        {
+            TaxesFileSerializerDeserializer loader = new(taxes, fileName);
+            loader.Load();
+        }
+
     }
 }

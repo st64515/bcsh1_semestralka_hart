@@ -6,7 +6,7 @@ namespace EnergyMonitor
         public string Description { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int Cost { get; set; }
+        public double Cost { get; set; }
         public Intervals Interval { get; set; }
 
         private BindingSource bsIntervals = new();
@@ -18,7 +18,7 @@ namespace EnergyMonitor
             comboBoxIntervals.DataSource = Enum.GetValues(typeof(Intervals)).Cast<Intervals>();
         }
 
-        public AddEditTaxForm(string description, DateTime startDate, DateTime endDate, int cost, Intervals interval)
+        public AddEditTaxForm(string description, DateTime startDate, DateTime endDate, double cost, Intervals interval)
         {
             InitializeComponent();
 

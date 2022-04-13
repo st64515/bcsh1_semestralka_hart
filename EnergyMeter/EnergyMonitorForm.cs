@@ -199,11 +199,46 @@ namespace EnergyMonitor
 
         private void ButtonSave_Click(object sender, EventArgs e)
         {
-
+            SaveFileDialog f = new SaveFileDialog();
+            f.Filter = "Energy Monitor Saves (*.EMSave)|*.EMSave";
+            DialogResult res = f.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                try
+                {
+                    meter.Save(f.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nastal problém s ukládáním dat.\n{ex.Message}");
+                }
+            }
         }
 
         private void ButtonLoad_Click(object sender, EventArgs e)
         {
+            OpenFileDialog f = new();
+            f.Filter = "Energy Monitor Saves (*.EMSave)|*.EMSave";
+            DialogResult res = f.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                try
+                {
+                    meter.Load(f.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nastal problém s ukládáním dat.\n{ex.Message}");
+                }
+
+                //refresh ListBox's DataSource
+                bsReadings.DataSource = null;
+                bsReadings.DataSource = meter.Readings;
+                bsPrices.DataSource = null;
+                bsPrices.DataSource = meter.Prices;
+                bsTaxes.DataSource = null;
+                bsTaxes.DataSource = meter.Taxes;
+            }
 
         }
     }

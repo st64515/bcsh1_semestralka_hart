@@ -6,7 +6,7 @@ using System.Collections;
 /// jejichž datum počátku a konce platnosti dává smysl.
 /// Záznamy jsou uloženy chronologicky.
 /// </summary>
-public class TaxesDatabase : IEnumerable
+public class TaxesDatabase : IEnumerable, ITaxesSaveableLoadable
 {
     public List<Tax> Data { get; } = new();
     public int Count => Data.Count;
@@ -21,8 +21,12 @@ public class TaxesDatabase : IEnumerable
     /// <param name="price">Cena za jednotku.</param>
     /// <param name="interval">Interval účtování poplatku.</param>
     /// <exception cref="NotImplementedException"></exception>
-    public void Add(Tax newTax)
+    public void Add(Tax? newTax)
     {
+        if (newTax == null)
+        {
+            return;
+        }
         if (newTax.StartDate > newTax.EndDate)
         {
             throw new ArgumentException("Datum počátku platnosti poplatku musí být dříve než jeho datum konce.");
@@ -52,7 +56,7 @@ public class TaxesDatabase : IEnumerable
     /// Metoda sloužící k odebrání prvku z určitého indexu.
     /// </summary>
     /// <param name="index"></param>
-    internal void Remove(int index)
+    public void Remove(int index)
     {
         if (index < 0 || index >= Data.Count)
         {
@@ -61,10 +65,33 @@ public class TaxesDatabase : IEnumerable
         Data.RemoveAt(index);
     }
 
+    public void Erase()
+    {
+        Data.Clear();
+    }
+
 
     public IEnumerator GetEnumerator()
     {
         return Data.GetEnumerator();
+    }
+
+    public Tax[] Save()
+    {
+        Tax[] taxesArray = new Tax[Data.Count];
+        Data.CopyTo(taxesArray, 0);
+
+        return taxesArray;
+    }
+
+    public void Load(Tax?[] loadedTaxes)
+    {
+        Erase();
+
+        for (int i = 0; i < loadedTaxes.Length; i++)
+        {
+            Add(loadedTaxes[i]);
+        }
     }
 
     public Tax this[int index]

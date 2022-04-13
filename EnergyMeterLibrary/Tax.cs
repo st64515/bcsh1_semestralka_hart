@@ -5,10 +5,10 @@ public class Tax
     public string Description { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public int Cost { get; set; }
+    public double Cost { get; set; }
     public Intervals Interval { get; set; }
 
-    public Tax(string name, DateTime dateStart, DateTime dateEnd, int cost, Intervals interval)
+    public Tax(string name, DateTime dateStart, DateTime dateEnd, double cost, Intervals interval)
     {
         Description = name;
         StartDate = dateStart;

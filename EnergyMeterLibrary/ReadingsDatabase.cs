@@ -6,33 +6,29 @@ using System.Collections;
 /// které dávají smysl. Musí být dodržena rostoucí tendence dnů a stavu měřiče.
 /// Záznamy jsou uloženy chronologicky.
 /// </summary>
-public class ReadingsDatabase : IEnumerable
+public class ReadingsDatabase : IEnumerable, IReadingsSaveableLoadable
 {
     public List<Reading> Data { get; } = new();
     public int Count => Data.Count;
     public int LastStateOfGauge => Data[^1].StateOfGauge;
     public DateTime LastReading => Data[^1].Date;
-    
-    /*
-    public ReadingsDatabase(Reading firstReading)
-    {
-        this.Add(firstReading);
-    }
-    */
-
+      
     public ReadingsDatabase()
     {
 
     }
-
 
     /// <summary>
     /// Metoda zajistí přidání validního odečtu vzhledem k odečtům minulým.
     /// </summary>
     /// <param name="dateOfReading">Datum odečtu.</param>
     /// <param name="actualStateOfGauge">Stav hodin při odečtu</param>
-    public void Add(Reading newReading)
+    public void Add(Reading? newReading)
     {
+        if(newReading == null)
+        {
+            return;
+        }
         if(newReading.StateOfGauge < 0)
         {
             throw new ArgumentException("Odečet nesmí být záporná hodnota.");
@@ -92,10 +88,11 @@ public class ReadingsDatabase : IEnumerable
         Data.RemoveAt(index);
     }
 
-    /// <summary>
-    /// Enumerátor odečtů
-    /// </summary>
-    /// <returns></returns>
+    public void Erase()
+    {
+        Data.Clear();
+    }
+
     public IEnumerator GetEnumerator()
     {
         return Data.GetEnumerator();
@@ -123,4 +120,21 @@ public class ReadingsDatabase : IEnumerable
         return true;
     }
 
+    public Reading[] Save()
+    {
+        Reading[] readingsArray = new Reading[Data.Count];
+        Data.CopyTo(readingsArray, 0);
+
+        return readingsArray;
+    }
+
+    public void Load(Reading?[] loadedReadings)
+    {
+        Erase();
+
+        for (int i = 0; i < loadedReadings.Length; i++)
+        {
+            Add(loadedReadings[i]);
+        }
+    }
 }

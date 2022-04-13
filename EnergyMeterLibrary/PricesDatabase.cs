@@ -6,7 +6,7 @@ using System.Collections;
 /// které se navzájem nepřekrývají.
 /// Implementuje rozhraní IEnumerable.
 /// </summary>
-public class PricesDatabase : IEnumerable
+public class PricesDatabase : IEnumerable, IPricesSaveableLoadable
 {
     public List<Price> Data { get; } = new();
     public int Count => Data.Count;
@@ -18,8 +18,12 @@ public class PricesDatabase : IEnumerable
     /// <param name="dateStart">Počáteční datum cenovky.</param>
     /// <param name="dateEnd">Expirační datum cenovky.</param>
     /// <param name="price">Cena za jednotku.</param>
-    public void Add(Price newPrice)
+    public void Add(Price? newPrice)
     {
+        if (newPrice == null)
+        {
+            return;
+        }
         if (newPrice.StartDate > newPrice.EndDate)
         {
             throw new ArgumentException("Počáteční datum musí být před datumem konce.");
@@ -47,7 +51,7 @@ public class PricesDatabase : IEnumerable
     /// <param name="index"></param>
     /// <param name="editedPrice"></param>
     /// <exception cref="ArgumentException"></exception>
-    internal void Edit(int index, Price editedPrice)
+    public void Edit(int index, Price editedPrice)
     {
         List<Price> tmpData = new(Data);
         tmpData.RemoveAt(index);
@@ -70,17 +74,40 @@ public class PricesDatabase : IEnumerable
     /// Metoda sloužící k odebrání prvku z určitého indexu.
     /// </summary>
     /// <param name="index"></param>
-    internal void Remove(int index)
+    public void Remove(int index)
     {
-        if(index < 0 || index >= Data.Count)
+        if (index < 0 || index >= Data.Count)
         {
             return;
         }
         Data.RemoveAt(index);
     }
 
+    public void Erase()
+    {
+        Data.Clear();
+    }
+
 
     public IEnumerator GetEnumerator() => Data.GetEnumerator();
+
+    public Price[] Save()
+    {
+        Price[] pricesArray = new Price[Data.Count];
+        Data.CopyTo(pricesArray, 0);
+
+        return pricesArray;
+    }
+
+    public void Load(Price?[] loadedPrices)
+    {
+        Erase();
+
+        for (int i = 0; i < loadedPrices.Length; i++)
+        {
+            Add(loadedPrices[i]);
+        }
+    }
 
     public Price this[int index]
     {
