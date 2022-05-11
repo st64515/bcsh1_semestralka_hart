@@ -29,6 +29,6 @@ public class Price : IComparable<Price>
     }
     override public string ToString()
     {
-        return $"od {StartDate.ToString("dd/MM/yyyy")} do {EndDate.ToString("dd/MM/yyyy")}: {Cost} Kč/kWh";
+        return $"od {StartDate:dd/MM/yyyy} do {EndDate:dd/MM/yyyy}: {Cost} Kč/kWh";
     }
 }

@@ -36,6 +36,6 @@ public class Tax
 
     override public string ToString()
     {
-        return $"{Description}: {StartDate.ToString("dd/MM/yyyy")} - {EndDate.ToString("dd/MM/yyyy")}: {Cost} Kč {Interval}";
+        return $"{Description}: {StartDate:dd/MM/yyyy} - {EndDate:dd/MM/yyyy}: {Cost} Kč {Interval}";
     }
 }

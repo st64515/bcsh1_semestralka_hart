@@ -16,21 +16,19 @@ namespace EnergyMonitorLibrary
         public void Save()
         {
             //Otevřít soubor file pro zápis
-            using (FileStream fs = File.Open(file, FileMode.Append))
-            {
-                //Každý záznam (získano voláním taxes.Save()) je zapsán na nový řádek do file
-                Tax[] tArr = taxes.Save();
-                Byte[] serialized;
+            using FileStream fs = File.Open(file, FileMode.Append);
+            //Každý záznam (získano voláním taxes.Save()) je zapsán na nový řádek do file
+            Tax[] tArr = taxes.Save();
+            Byte[] serialized;
 
-                foreach (Tax t in tArr)
-                {
-                    //Převod pomocí metody Serialize
-                    serialized = new UTF8Encoding(true).GetBytes(Serialize(t));
-                    fs.Write(serialized, 0, serialized.Length);
-                }
-                //Soubor file je uzavřen
-                fs.Close();
+            foreach (Tax t in tArr)
+            {
+                //Převod pomocí metody Serialize
+                serialized = new UTF8Encoding(true).GetBytes(Serialize(t));
+                fs.Write(serialized, 0, serialized.Length);
             }
+            //Soubor file je uzavřen
+            fs.Close();
         }
         public void Load()
         {
@@ -38,7 +36,7 @@ namespace EnergyMonitorLibrary
             //Otevřít soubor file pro zápis
             using (FileStream fs = File.Open(file, FileMode.Open))
             {
-                StreamReader sr = new StreamReader(fs, new UTF8Encoding(false), false);
+                StreamReader sr = new (fs, new UTF8Encoding(false), false);
 
                 //jsou načteny všechny řádky textu a převedeny do pole taxes(s využitím metody Deserialize)
                 while (!sr.EndOfStream)
@@ -60,14 +58,12 @@ namespace EnergyMonitorLibrary
         }
         private static Tax? Deserialize(string? s)
         {
-            StringBuilder sb = new StringBuilder();
-
             int wordCounter = 0;
             string delimiter = "<#^>";
 
             string descriptionDeser = string.Empty;
-            DateTime startDateDeser = new DateTime(0);
-            DateTime endDateDeser = new DateTime(0);
+            DateTime startDateDeser = new(0);
+            DateTime endDateDeser = new(0);
             double costDeser = -1;
             int intervalNumber = -1;
 

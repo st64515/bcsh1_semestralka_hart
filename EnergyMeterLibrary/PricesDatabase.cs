@@ -31,7 +31,7 @@ public class PricesDatabase : IEnumerable, IPricesSaveableLoadable
         if (Data.Count > 0 && newPrice.EndDate > Data.First().StartDate.AddYears(1))
         {
             throw new ArgumentException("Nelze spravovat více než jeden rok. " +
-                $"Nová cena musí končit nejpozději dne {Data.First().StartDate.AddYears(1).ToString("dd/MM/yyyy")}");
+                $"Nová cena musí končit nejpozději dne {Data.First().StartDate.AddYears(1):dd/MM/yyyy}");
         }
         if (newPrice.EndDate > newPrice.StartDate.AddYears(1))
         {
@@ -164,8 +164,6 @@ public class PricesDatabase : IEnumerable, IPricesSaveableLoadable
                 break;
             }
         }
-
-        int countOfCountingIntervals = iEnd - iStart;
 
         //začíná a končí ve stejném intervalu?
         if (iStart == iEnd)

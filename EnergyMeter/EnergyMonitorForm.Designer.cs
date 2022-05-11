@@ -247,7 +247,7 @@
             this.textBoxMonthlyPay.Name = "textBoxMonthlyPay";
             this.textBoxMonthlyPay.Size = new System.Drawing.Size(100, 23);
             this.textBoxMonthlyPay.TabIndex = 19;
-            this.textBoxMonthlyPay.TextChanged += new System.EventHandler(this.textBoxMonthlyPay_TextChanged);
+            this.textBoxMonthlyPay.TextChanged += new System.EventHandler(this.TextBoxMonthlyPay_TextChanged);
             // 
             // label4
             // 
@@ -422,7 +422,7 @@
             this.buttonCalculate.TabIndex = 39;
             this.buttonCalculate.Text = "Vypočítej";
             this.buttonCalculate.UseVisualStyleBackColor = true;
-            this.buttonCalculate.Click += new System.EventHandler(this.buttonCalculate_Click);
+            this.buttonCalculate.Click += new System.EventHandler(this.ButtonCalculate_Click);
             // 
             // EnergyMonitorForm
             // 
@@ -467,6 +467,7 @@
             this.Controls.Add(this.buttonAddReading);
             this.Controls.Add(this.listBoxPrices);
             this.Controls.Add(this.listBoxReadings);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "EnergyMonitorForm";
             this.Text = "Energy Monitor";

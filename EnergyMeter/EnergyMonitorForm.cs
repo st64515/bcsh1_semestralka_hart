@@ -5,10 +5,10 @@ namespace EnergyMonitor
     public partial class EnergyMonitorForm : Form
     {
 
-        private Meter meter = new();
-        private BindingSource bsReadings = new();
-        private BindingSource bsPrices = new();
-        private BindingSource bsTaxes = new();
+        private readonly Meter meter = new();
+        private readonly BindingSource bsReadings = new();
+        private readonly BindingSource bsPrices = new();
+        private readonly BindingSource bsTaxes = new();
 
         public EnergyMonitorForm()
         {
@@ -199,7 +199,7 @@ namespace EnergyMonitor
 
         private void ButtonSave_Click(object sender, EventArgs e)
         {
-            SaveFileDialog f = new SaveFileDialog();
+            SaveFileDialog f = new();
             f.Filter = "Energy Monitor Saves (*.EMSave)|*.EMSave";
             DialogResult res = f.ShowDialog();
             if (res == DialogResult.OK)
@@ -242,7 +242,7 @@ namespace EnergyMonitor
 
         }
 
-        private void textBoxMonthlyPay_TextChanged(object sender, EventArgs e)
+        private void TextBoxMonthlyPay_TextChanged(object sender, EventArgs e)
         {
             if (textBoxMonthlyPay.Text == String.Empty)
             {
@@ -253,7 +253,7 @@ namespace EnergyMonitor
             {
                 monthly = Double.Parse(textBoxMonthlyPay.Text);
             }
-            catch (FormatException ex) { };
+            catch (FormatException) { };
 
             if (monthly <= 0)
             {
@@ -266,7 +266,7 @@ namespace EnergyMonitor
             }
         }
 
-        private void buttonCalculate_Click(object sender, EventArgs e)
+        private void ButtonCalculate_Click(object sender, EventArgs e)
         {
             try
             {
