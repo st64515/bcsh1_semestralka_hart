@@ -3,6 +3,5 @@
 public enum Intervals
 {
     PerMonth,
-    PerMWh,
-    PerkWh
+    PerMWh
 }

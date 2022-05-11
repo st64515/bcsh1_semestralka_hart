@@ -99,7 +99,7 @@ public class TaxesDatabase : IEnumerable, ITaxesSaveableLoadable
         get => Data[index];
     }
 
-    public double GetTaxesIn(DateTime startDate, DateTime endDate, int consumedKwh)
+    public double GetTaxesIn(DateTime startDate, DateTime endDate, ReadingsDatabase rDatabase)
     {
 
         double sum = 0;
@@ -114,10 +114,15 @@ public class TaxesDatabase : IEnumerable, ITaxesSaveableLoadable
                 DateTime countingStart = (startDate > Data[i].StartDate) ? startDate : Data[i].StartDate;
                 DateTime countingEnd = (endDate < Data[i].EndDate) ? endDate : Data[i].EndDate;
 
-                koeficient = ((C.Year - date2.Year) * 12) + date1.Month - date2.Month
+                koeficient = ((countingEnd.Year - countingStart.Year) * 12) + countingEnd.Month - countingStart.Month;
             }
-            else
-                sum += (koeficient * Data[i].Cost);
+            else if (Data[i].Interval == Intervals.PerMWh)
+            {
+                //zjisti kolik MWh bylo v období spáleno
+
+                koeficient = rDatabase.GetMWhBurntIn(Data[i].StartDate, Data[i].EndDate);
+            }
+            sum += (koeficient * Data[i].Cost);
         }
         return sum;
 

@@ -28,6 +28,15 @@ public class PricesDatabase : IEnumerable, IPricesSaveableLoadable
         {
             throw new ArgumentException("Počáteční datum musí být před datumem konce.");
         }
+        if (Data.Count > 0 && newPrice.EndDate > Data.First().StartDate.AddYears(1))
+        {
+            throw new ArgumentException("Nelze spravovat více než jeden rok. " +
+                $"Nová cena musí končit nejpozději dne {Data.First().StartDate.AddYears(1).ToString("dd/MM/yyyy")}");
+        }
+        if (newPrice.EndDate > newPrice.StartDate.AddYears(1))
+        {
+            throw new ArgumentException("Nelze spravovat více než jeden rok.");
+        }
 
         List<Price> tmpData = new(Data);
         tmpData.Add(newPrice);
@@ -117,11 +126,11 @@ public class PricesDatabase : IEnumerable, IPricesSaveableLoadable
     public double GetVeightedAverageYearConsumption()
     {
         double sum = 0;
-        int daysInPricelist = (Data.Last().EndDate - Data.First().StartDate).Days +1;
+        int daysInPricelist = (Data.Last().EndDate - Data.First().StartDate).Days + 1;
 
         for (int i = 0; i < Data.Count; i++)
         {
-            int daysBetween = (Data[i].EndDate - Data[i].StartDate).Days +1;
+            int daysBetween = (Data[i].EndDate - Data[i].StartDate).Days + 1;
             sum += (daysBetween * (Data[i].Cost));
         }
 
@@ -162,13 +171,13 @@ public class PricesDatabase : IEnumerable, IPricesSaveableLoadable
         if (iStart == iEnd)
         {
             //dej cenu z tohoto intervalu
-            int daysInThisInterval = (endDate - startDate).Days +1;
+            int daysInThisInterval = (endDate - startDate).Days + 1;
             sumPrice += daysInThisInterval * Data[iStart].Cost;
         }
         else
         {
             //dej cenu z více intervalů
-            for(int i = iStart; i <= iEnd; i++)
+            for (int i = iStart; i <= iEnd; i++)
             {
                 //započítej z prvního intervalu (pouze některé dny z konce)
                 if (i == iStart)
@@ -177,21 +186,21 @@ public class PricesDatabase : IEnumerable, IPricesSaveableLoadable
                     sumPrice += daysInThisInterval * Data[i].Cost;
                 }
                 //započítej z prostředního intervalu (všechny dny)
-                else if(i > iStart && i < iEnd)
+                else if (i > iStart && i < iEnd)
                 {
-                    int daysInThisInterval = (Data[i].EndDate - Data[i].StartDate).Days +1;
+                    int daysInThisInterval = (Data[i].EndDate - Data[i].StartDate).Days + 1;
                     sumPrice += daysInThisInterval * Data[i].Cost;
                 }
                 //započítej z koncového intervalu (pouze některé dny z počátku)
-                else if(i == iEnd)
+                else if (i == iEnd)
                 {
-                    int daysInThisInterval = (endDate - Data[i].StartDate).Days +1;
+                    int daysInThisInterval = (endDate - Data[i].StartDate).Days + 1;
                     sumPrice += daysInThisInterval * Data[i].Cost;
                 }
             }
         }
 
-        int daysTotal = (endDate - startDate).Days +1;
+        int daysTotal = (endDate - startDate).Days + 1;
         return sumPrice / daysTotal;
     }
 }

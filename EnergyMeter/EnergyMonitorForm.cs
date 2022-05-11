@@ -13,13 +13,13 @@ namespace EnergyMonitor
         public EnergyMonitorForm()
         {
             InitializeComponent();
-
+            /*
             meter.AddReading(new Reading(new DateTime(2022, 04, 01), 10000));
             meter.AddPrice(new Price(new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 2));
             meter.AddPrice(new Price(new DateTime(2024, 01, 01), new DateTime(2026, 12, 31), 10));
             meter.AddReading(new Reading(new DateTime(2022, 04, 10), 11000));
             meter.AddTax(new Tax("Poplatek", new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 1000, Intervals.PerMonth));
-
+            */
             bsReadings.DataSource = meter.Readings;
             listBoxReadings.DataSource = bsReadings;
 
@@ -296,8 +296,8 @@ namespace EnergyMonitor
                 }
 
                 //spotřebováno na poplatcích
-                    
-                double taxesConsumed = meter.TaxesDatabase.GetTaxesIn(meter.Readings.First().Date, meter.Readings.Last().Date, consumedKwh);
+                double taxesConsumed = meter.TaxesDatabase.GetTaxesIn(meter.Readings.First().Date, meter.Readings.Last().Date, meter.ReadingsDatabase);
+                textBoxTaxesConsumed.Text = taxesConsumed.ToString("N2");
 
                 //výpis
                 textBoxRemainigMoney.Text = (Double.Parse(textBoxYearPay.Text) - consumedMoney - taxesConsumed).ToString("N2");
