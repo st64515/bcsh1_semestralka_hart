@@ -39,7 +39,7 @@ namespace EnergyMonitor
 
         private void ButtonOk_Click(object sender, EventArgs e)
         {
-            if (int.TryParse(textBoxCost.Text, out int costParsed))
+            if (Double.TryParse(textBoxCost.Text, out double costParsed))
             {
                 Description = textBoxDescription.Text;
                 StartDate = dateTimePickerStartDate.Value.Date;
