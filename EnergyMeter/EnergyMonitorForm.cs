@@ -1,4 +1,4 @@
-using EnergyMonitorLibrary;
+﻿using EnergyMonitorLibrary;
 
 namespace EnergyMonitor
 {
@@ -210,7 +210,7 @@ namespace EnergyMonitor
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Nastal probl�m s ukl�d�n�m dat.\n{ex.Message}");
+                    MessageBox.Show($"Nastal problém s ukládáním dat.\n{ex.Message}");
                 }
             }
         }
@@ -228,7 +228,7 @@ namespace EnergyMonitor
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Nastal probl�m s ukl�d�n�m dat.\n{ex.Message}");
+                    MessageBox.Show($"Nastal problém s ukládáním dat.\n{ex.Message}");
                 }
 
                 //refresh ListBox's DataSource
@@ -240,6 +240,78 @@ namespace EnergyMonitor
                 bsTaxes.DataSource = meter.Taxes;
             }
 
+        }
+
+        private void textBoxMonthlyPay_TextChanged(object sender, EventArgs e)
+        {
+            if (textBoxMonthlyPay.Text == String.Empty)
+            {
+                return;
+            }
+            double monthly = -1;
+            try
+            {
+                monthly = Double.Parse(textBoxMonthlyPay.Text);
+            }
+            catch (FormatException ex) { };
+
+            if (monthly <= 0)
+            {
+                MessageBox.Show("Neplatná hodnota Měsíční záloha!\n");
+                textBoxYearPay.Text = "???";
+            }
+            else
+            {
+                textBoxYearPay.Text = (monthly * 12).ToString("N2");
+            }
+        }
+
+        private void buttonCalculate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //denní limit
+                double dayLimit = meter.PricesDatabase.GetVeightedAverageYearConsumption();
+                textBoxDayLimit.Text = dayLimit.ToString("N2");
+
+                //spotřebováno kWh
+                int consumedKwh = meter.Readings.Last().StateOfGauge - meter.Readings.First().StateOfGauge;
+                textBoxConsumedKwh.Text = consumedKwh.ToString();
+
+                //spotřebováno peněz
+                double consumedMoney = 0;
+                for (int i = 0; i < meter.Readings.Count - 1; i++)
+                {
+                    int consumedKwhInThisInterval = meter.Readings[i + 1].StateOfGauge - meter.Readings[i].StateOfGauge;
+                    double avgPriceInThisInterval = meter.PricesDatabase.GetAveragePriceIn(meter.Readings[i].Date, meter.Readings[i + 1].Date);
+                    consumedMoney += (avgPriceInThisInterval * consumedKwhInThisInterval);
+                }
+                if (consumedMoney == 0)
+                {
+                    textBoxConsumedMoney.Text = "???";
+                }
+                else
+                {
+                    textBoxConsumedMoney.Text = consumedMoney.ToString("N2");
+                }
+
+                //spotřebováno na poplatcích
+                    
+                double taxesConsumed = meter.TaxesDatabase.GetTaxesIn(meter.Readings.First().Date, meter.Readings.Last().Date, consumedKwh);
+
+                //výpis
+                textBoxRemainigMoney.Text = (Double.Parse(textBoxYearPay.Text) - consumedMoney - taxesConsumed).ToString("N2");
+            }
+            catch (Exception ex)
+            {
+                if (ex is InvalidOperationException || ex is FormatException)
+                {
+                    MessageBox.Show($"Některá data pro výpočet chybí nebo nejsou zadána správně.\n\n{ex.Message}");
+                    return;
+                }
+
+                throw;
+            }
         }
     }
 }

@@ -113,4 +113,85 @@ public class PricesDatabase : IEnumerable, IPricesSaveableLoadable
     {
         get => Data[index];
     }
+
+    public double GetVeightedAverageYearConsumption()
+    {
+        double sum = 0;
+        int daysInPricelist = (Data.Last().EndDate - Data.First().StartDate).Days +1;
+
+        for (int i = 0; i < Data.Count; i++)
+        {
+            int daysBetween = (Data[i].EndDate - Data[i].StartDate).Days +1;
+            sum += (daysBetween * (Data[i].Cost));
+        }
+
+        return (sum / daysInPricelist);
+    }
+
+    public double GetAveragePriceIn(DateTime startDate, DateTime endDate)
+    {
+        double sumPrice = 0;
+
+        //najdi ve kterém intervalu začíná
+        int iStart = 0;
+        for (int i = 0; i < Data.Count; i++)
+        {
+            if (startDate >= Data[i].StartDate &&
+               startDate <= Data[i].EndDate)
+            {
+                iStart = i;
+                break;
+            }
+        }
+
+        //najdi ve kterém intervalu končí
+        int iEnd = 0;
+        for (int i = 0; i < Data.Count; i++)
+        {
+            if (endDate >= Data[i].StartDate &&
+               endDate <= Data[i].EndDate)
+            {
+                iEnd = i;
+                break;
+            }
+        }
+
+        int countOfCountingIntervals = iEnd - iStart;
+
+        //začíná a končí ve stejném intervalu?
+        if (iStart == iEnd)
+        {
+            //dej cenu z tohoto intervalu
+            int daysInThisInterval = (endDate - startDate).Days +1;
+            sumPrice += daysInThisInterval * Data[iStart].Cost;
+        }
+        else
+        {
+            //dej cenu z více intervalů
+            for(int i = iStart; i <= iEnd; i++)
+            {
+                //započítej z prvního intervalu (pouze některé dny z konce)
+                if (i == iStart)
+                {
+                    int daysInThisInterval = (Data[i].EndDate - startDate).Days + 1;
+                    sumPrice += daysInThisInterval * Data[i].Cost;
+                }
+                //započítej z prostředního intervalu (všechny dny)
+                else if(i > iStart && i < iEnd)
+                {
+                    int daysInThisInterval = (Data[i].EndDate - Data[i].StartDate).Days +1;
+                    sumPrice += daysInThisInterval * Data[i].Cost;
+                }
+                //započítej z koncového intervalu (pouze některé dny z počátku)
+                else if(i == iEnd)
+                {
+                    int daysInThisInterval = (endDate - Data[i].StartDate).Days +1;
+                    sumPrice += daysInThisInterval * Data[i].Cost;
+                }
+            }
+        }
+
+        int daysTotal = (endDate - startDate).Days +1;
+        return sumPrice / daysTotal;
+    }
 }

@@ -98,4 +98,28 @@ public class TaxesDatabase : IEnumerable, ITaxesSaveableLoadable
     {
         get => Data[index];
     }
+
+    public double GetTaxesIn(DateTime startDate, DateTime endDate, int consumedKwh)
+    {
+
+        double sum = 0;
+
+
+        for (int i = 0; i < Data.Count; i++)
+        {
+            double koeficient = 0;
+            if (Data[i].Interval == Intervals.PerMonth)
+            {
+                //zjisti kolik měsíců zatím uběhlo
+                DateTime countingStart = (startDate > Data[i].StartDate) ? startDate : Data[i].StartDate;
+                DateTime countingEnd = (endDate < Data[i].EndDate) ? endDate : Data[i].EndDate;
+
+                koeficient = ((C.Year - date2.Year) * 12) + date1.Month - date2.Month
+            }
+            else
+                sum += (koeficient * Data[i].Cost);
+        }
+        return sum;
+
+    }
 }

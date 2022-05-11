@@ -2,67 +2,67 @@
 using System.Text;
 public class Meter
 {
-    public List<Reading> Readings => readings.Data;
-    public List<Price> Prices => prices.Data;
-    public List<Tax> Taxes => taxes.Data;
+    public List<Reading> Readings => ReadingsDatabase.Data;
+    public List<Price> Prices => PricesDatabase.Data;
+    public List<Tax> Taxes => TaxesDatabase.Data;
 
-    private readonly ReadingsDatabase readings;
-    private readonly PricesDatabase prices;
-    private readonly TaxesDatabase taxes;
+    public PricesDatabase PricesDatabase { get; }
+    public ReadingsDatabase ReadingsDatabase { get; }
+    public TaxesDatabase TaxesDatabase { get; }
 
     public Meter()
     {
-        readings = new();
-        prices = new();
-        taxes = new();
+        ReadingsDatabase = new();
+        PricesDatabase = new();
+        TaxesDatabase = new();
     }
 
     //READINGS
     public void AddReading(Reading newReading)
     {
-        readings.Add(newReading);
+        ReadingsDatabase.Add(newReading);
     }
 
     public void EditReading(int index, Reading editedReading)
     {
-        readings.Edit(index, editedReading);
+        ReadingsDatabase.Edit(index, editedReading);
     }
 
     public void RemoveReading(int index)
     {
-        readings.Remove(index);
+        ReadingsDatabase.Remove(index);
     }
 
     //PRICES
     public void AddPrice(Price newPrice)
     {
-        prices.Add(newPrice);
+        PricesDatabase.Add(newPrice);
     }
 
     public void EditPrice(int index, Price editedPrice)
     {
-        prices.Edit(index, editedPrice);
+        PricesDatabase.Edit(index, editedPrice);
     }
 
     public void RemovePrice(int index)
     {
-        prices.Remove(index);
+        PricesDatabase.Remove(index);
     }
 
     //TAXES
     public void AddTax(Tax newTax)
     {
-        taxes.Add(newTax);
+        TaxesDatabase.Add(newTax);
     }
 
     public void EditTax(int index, Tax editedTax)
     {
-        taxes.Edit(index, editedTax);
+        TaxesDatabase.Edit(index, editedTax);
     }
 
     public void RemoveTax(int index)
     {
-        taxes.Remove(index);
+        TaxesDatabase.Remove(index);
     }
 
 
@@ -71,9 +71,9 @@ public class Meter
     internal string PrintPrices()
     {
         StringBuilder sb = new();
-        for (int i = 0; i < prices.Count; i++)
+        for (int i = 0; i < PricesDatabase.Count; i++)
         {
-            sb.AppendLine(prices[i].ToString());
+            sb.AppendLine(PricesDatabase[i].ToString());
 
         }
         return sb.ToString();
@@ -93,13 +93,13 @@ public class Meter
             return string.Empty;
         }
 
-        for (int i = readings.Count - 1; i >= 0; i--)
+        for (int i = ReadingsDatabase.Count - 1; i >= 0; i--)
         {
             if (i >= n)
             {
                 break;
             }
-            sb.AppendLine(readings[i].ToString());
+            sb.AppendLine(ReadingsDatabase[i].ToString());
 
         }
         return sb.ToString();
@@ -112,9 +112,9 @@ public class Meter
     public string PrintTaxes()
     {
         StringBuilder sb = new();
-        for (int i = 0; i < taxes.Count; i++)
+        for (int i = 0; i < TaxesDatabase.Count; i++)
         {
-            sb.AppendLine(taxes[i].ToString());
+            sb.AppendLine(TaxesDatabase[i].ToString());
 
         }
         return sb.ToString();
@@ -179,15 +179,15 @@ public class Meter
     public void Save(string fileName)
     {
         {
-            ReadingsFileSerializerDeserializer saver = new(readings, fileName);
+            ReadingsFileSerializerDeserializer saver = new(ReadingsDatabase, fileName);
             saver.Save();
         }
         {
-            PricesFileSerializerDeserializer saver = new(prices, fileName);
+            PricesFileSerializerDeserializer saver = new(PricesDatabase, fileName);
             saver.Save();
         }
         {
-            TaxesFileSerializerDeserializer saver = new(taxes, fileName);
+            TaxesFileSerializerDeserializer saver = new(TaxesDatabase, fileName);
             saver.Save();
         }
     }
@@ -195,15 +195,15 @@ public class Meter
     public void Load(string fileName)
     {
         {
-            ReadingsFileSerializerDeserializer loader = new(readings, fileName);
+            ReadingsFileSerializerDeserializer loader = new(ReadingsDatabase, fileName);
             loader.Load();
         }
         {
-            PricesFileSerializerDeserializer loader = new(prices, fileName);
+            PricesFileSerializerDeserializer loader = new(PricesDatabase, fileName);
             loader.Load();
         }
         {
-            TaxesFileSerializerDeserializer loader = new(taxes, fileName);
+            TaxesFileSerializerDeserializer loader = new(TaxesDatabase, fileName);
             loader.Load();
         }
 
