@@ -213,4 +213,21 @@ public class ReadingsDatabase : IEnumerable, IReadingsSaveableLoadable
             Add(loadedReadings[i]);
         }
     }
+
+    public void GetAvgConsumptionInYear(out List<int> yearAvgConsumption)
+    {
+        yearAvgConsumption = new();
+        if (Data.Count > 1)
+        {
+            for (int i_reading = 1; i_reading < Data.Count; i_reading++)
+            {
+                int daysInThisInterval = (Data[i_reading].Date - Data[i_reading - 1].Date).Days + 1;
+                int kwhInThisInterval = Data[i_reading].StateOfGauge - Data[i_reading - 1].StateOfGauge;
+                for (int i_days = 0; i_days < daysInThisInterval; i_days++)
+                {
+                    yearAvgConsumption.Add(kwhInThisInterval / daysInThisInterval);
+                }
+            }
+        }
+    }
 }

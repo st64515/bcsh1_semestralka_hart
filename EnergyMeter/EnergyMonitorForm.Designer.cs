@@ -66,6 +66,8 @@
             this.textBoxRemainigMoney = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.buttonCalculate = new System.Windows.Forms.Button();
+            this.panelGraph = new System.Windows.Forms.Panel();
+            this.label17 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listBoxReadings
@@ -194,7 +196,7 @@
             // 
             // buttonNewTax
             // 
-            this.buttonNewTax.Location = new System.Drawing.Point(814, 242);
+            this.buttonNewTax.Location = new System.Drawing.Point(878, 242);
             this.buttonNewTax.Name = "buttonNewTax";
             this.buttonNewTax.Size = new System.Drawing.Size(114, 43);
             this.buttonNewTax.TabIndex = 12;
@@ -208,7 +210,7 @@
             this.listBoxTaxes.ItemHeight = 15;
             this.listBoxTaxes.Location = new System.Drawing.Point(560, 37);
             this.listBoxTaxes.Name = "listBoxTaxes";
-            this.listBoxTaxes.Size = new System.Drawing.Size(368, 199);
+            this.listBoxTaxes.Size = new System.Drawing.Size(432, 199);
             this.listBoxTaxes.TabIndex = 15;
             // 
             // label3
@@ -216,14 +218,14 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label3.Location = new System.Drawing.Point(560, 9);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(368, 23);
+            this.label3.Size = new System.Drawing.Size(432, 23);
             this.label3.TabIndex = 16;
             this.label3.Text = "POPLATKY";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(814, 638);
+            this.buttonSave.Location = new System.Drawing.Point(878, 638);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(114, 28);
             this.buttonSave.TabIndex = 17;
@@ -233,7 +235,7 @@
             // 
             // buttonLoad
             // 
-            this.buttonLoad.Location = new System.Drawing.Point(694, 638);
+            this.buttonLoad.Location = new System.Drawing.Point(758, 638);
             this.buttonLoad.Name = "buttonLoad";
             this.buttonLoad.Size = new System.Drawing.Size(114, 28);
             this.buttonLoad.TabIndex = 18;
@@ -424,11 +426,30 @@
             this.buttonCalculate.UseVisualStyleBackColor = true;
             this.buttonCalculate.Click += new System.EventHandler(this.ButtonCalculate_Click);
             // 
+            // panelGraph
+            // 
+            this.panelGraph.Location = new System.Drawing.Point(262, 347);
+            this.panelGraph.Name = "panelGraph";
+            this.panelGraph.Size = new System.Drawing.Size(730, 285);
+            this.panelGraph.TabIndex = 40;
+            // 
+            // label17
+            // 
+            this.label17.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label17.Location = new System.Drawing.Point(262, 304);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(730, 40);
+            this.label17.TabIndex = 41;
+            this.label17.Text = "Průměrná denní spotřeba";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // EnergyMonitorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(940, 678);
+            this.ClientSize = new System.Drawing.Size(1006, 678);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.panelGraph);
             this.Controls.Add(this.buttonCalculate);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.textBoxRemainigMoney);
@@ -516,5 +537,7 @@
         private TextBox textBoxRemainigMoney;
         private Label label16;
         private Button buttonCalculate;
+        private Panel panelGraph;
+        private Label label17;
     }
 }

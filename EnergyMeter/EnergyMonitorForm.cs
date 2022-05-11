@@ -13,13 +13,20 @@ namespace EnergyMonitor
         public EnergyMonitorForm()
         {
             InitializeComponent();
-            /*
-            meter.AddReading(new Reading(new DateTime(2022, 04, 01), 10000));
-            meter.AddPrice(new Price(new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 2));
-            meter.AddPrice(new Price(new DateTime(2024, 01, 01), new DateTime(2026, 12, 31), 10));
-            meter.AddReading(new Reading(new DateTime(2022, 04, 10), 11000));
-            meter.AddTax(new Tax("Poplatek", new DateTime(2022, 01, 01), new DateTime(2023, 12, 31), 1000, Intervals.PerMonth));
-            */
+
+            meter.AddReading(new Reading(new DateTime(2021, 07, 01), 10000));
+            meter.AddReading(new Reading(new DateTime(2021, 10, 11), 10865));
+            meter.AddReading(new Reading(new DateTime(2021, 12, 11), 11204));
+            meter.AddReading(new Reading(new DateTime(2022, 01, 30), 11800));
+            meter.AddReading(new Reading(new DateTime(2022, 04, 20), 12475));
+            meter.AddReading(new Reading(new DateTime(2022, 05, 11), 12532));
+            meter.AddPrice(new Price(new DateTime(2021, 07, 01), new DateTime(2021, 12, 31), 3));
+            meter.AddPrice(new Price(new DateTime(2022, 01, 01), new DateTime(2022, 06, 30), 5.5));
+            meter.AddTax(new Tax("Poplatek", new DateTime(2021, 01, 01), new DateTime(2023, 12, 31), 1000, Intervals.PerMonth));
+            meter.AddTax(new Tax("Poplatek", new DateTime(2022, 03, 01), new DateTime(2022, 03, 31), 1, Intervals.PerMWh));
+
+            textBoxMonthlyPay.Text = "2500";
+
             bsReadings.DataSource = meter.Readings;
             listBoxReadings.DataSource = bsReadings;
 
@@ -312,6 +319,80 @@ namespace EnergyMonitor
 
                 throw;
             }
+
+            //drawing
+            List<int> yearAvgConsumption = new();
+            meter.ReadingsDatabase.GetAvgConsumptionInYear(out yearAvgConsumption);
+            int canvasWidth = panelGraph.Width - 1;
+            int canvasHeight = panelGraph.Height - 1;
+            int shift = 10;
+            double max = yearAvgConsumption.Max();
+            double maximizer = (canvasHeight - (shift + 10)) / max;
+
+            Graphics g = panelGraph.CreateGraphics();
+            g.Clear(Color.LightGray);
+            Pen p;
+            SolidBrush brush5, brush4, brush3;
+            Rectangle r;
+
+            //draw columns
+            int columnWidth = (int)Math.Round(canvasWidth / (double)yearAvgConsumption.Count);
+            Color blue5 = Color.FromArgb(0, 48, 90);
+            Color blue4 = Color.FromArgb(0, 75, 141);
+            Color blue3 = Color.FromArgb(0, 116, 217);
+            Color blue2 = Color.FromArgb(65, 146, 217);
+            Color blue1 = Color.FromArgb(122, 186, 242);
+            brush5 = new SolidBrush(blue5);
+            brush4 = new SolidBrush(blue4);
+            brush3 = new SolidBrush(blue3);
+
+            int verticalGrids = 12;
+            int verticalGridsSpacing = canvasWidth / verticalGrids;
+            /*
+            int horizontalGrids = 20;
+            int horizontalGridsSpacing = canvasHeight / verticalGrids;
+            */
+
+            //draw backgroud grid
+            p = new Pen(blue2, 3);
+            for (int i = 1; i < verticalGrids; i++)
+            {
+                g.DrawLine(p, i * verticalGridsSpacing, canvasHeight, i * verticalGridsSpacing, 0);
+            }
+
+
+            //backgroud rectangles
+            for (int i = 0; i < yearAvgConsumption.Count; i++)
+            {
+                int columnHeight = (int)(yearAvgConsumption[i] * maximizer);
+                r = new Rectangle(i * columnWidth + shift, canvasHeight - columnHeight - shift, 2, columnHeight + shift);
+                g.FillRectangle(brush4, r);
+            }
+
+            //foreground rectangles
+            for (int i = 0; i < yearAvgConsumption.Count; i++)
+            {
+                int columnHeight = (int)(yearAvgConsumption[i] * maximizer);
+                r = new Rectangle(i * columnWidth, canvasHeight - columnHeight, 2, columnHeight);
+                g.FillRectangle(brush3, r);
+            }
+
+            /*
+            //draw foreground grid
+            p = new Pen(blue1, 1);
+            for (int i = 1; i < verticalGrids; i++)
+            {
+                g.DrawLine(p, i * verticalGridsSpacing, canvasHeight, i * verticalGridsSpacing, 0);
+            }
+            */
+
+            //draw border
+            p = new Pen(blue5, 4);
+            r = new Rectangle(2, 2, canvasWidth - 2, canvasHeight - 2);
+            g.DrawRectangle(p, r);
+
+
+
         }
     }
 }
